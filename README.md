@@ -1,75 +1,28 @@
 
-# AIRFLOW
 
-Download necessities in VS code through Airflow official github : https://github.com/apache/airflow?tab=readme-ov-file#installing-from-pypi
+# KAFKA
 
-click on: Installing from PyPI
+Learning Kafka with Spark Streaming and Airflow
+[[Apache Kafka blog](https://kafka.apache.org/quickstart)]
 
-Open VSCODE project:
+STEP 1: DOWNLOAD AND INSTALL KAFKA
+[[Download](https://www.apache.org/dyn/closer.cgi?path=/kafka/3.6.1/kafka_2.13-3.6.1.tgz)]
 
-1. create python env 
-`
-python3 -m venv py_env
-`
-`
-source py_env/bin/activate
-`
+STEP 2: START THE KAFKA ENVIRONMENT (use cmd prompt and go inside kafka folder)
+Start the ZooKeeper service
+.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
 
-2. export aiflow to current project directory
-`
-export AIRFLOW_HOME=.
-`
+Start the Kafka broker service
+.\bin\windows\kafka-server-start.bat .\config\server.properties
 
-3. Intialize airflow database
-`
-airflow db init    #logs will be created with SQLite database and then make sure of step 4 
-`
+STEP 3: CREATE A TOPIC TO STORE YOUR EVENTS
+.\bin\windows\kafka-topics.bat --create --topic topic_demo --bootstrap-server localhost:9092
 
-4. For webserver configurations
+STEP 4: WRITE SOME EVENTS INTO THE TOPIC
+.\bin\windows\kafka-console-producer.bat --topic topic_demo --bootstrap-server localhost:9092
 
-- Make sure for :Open your Airflow configuration file, which is typically named airflow.cfg.
+STEP 5:  READ THE EVENTS
+.\bin\windows\kafka-console-consumer.bat --topic topic_demo --from-beginning --bootstrap-server localhost:9092
+hello world
+topic demo
 
-    sql_alchemy_conn = sqlite:///./airflow.db
-
-- Change the relative path to an absolute path, for example:
-
-    sql_alchemy_conn = sqlite:////absolute/path/to/your/airflow.db
-
-Replace /absolute/path/to/your/airflow.db with the actual absolute path where you want to store your Airflow database.
-
-Save the configuration file.
-Then RUN webserver in terminal
-`
-airflow webserver -p 8080  #on port 8080
-`
-![open url http://0.0.0.0:8080/login/](images/image_login.png)
-
-5. Set Username and Password for the web server
- `
- airflow users create --username admin --firstname Rasika --lastname Gulhane --role Admin --email gulhanerasika@gmail.com
- `
- set password:
- `
- password 
- `
- Run the webserver again and follow the link and try sign in
-
- ![logged-in admin](images/image_acc_admin.png)
-
-6. open another terminal
-
-repeat step 2 for scheduler connection 
-
-Then initialize scheduler 
-
-`
-airflow scheduler
-`
-
-- Checkall scheduler
-`
-ps aux | grep "airflow scheduler"
-`
-open webserver to see if scheduler is running (it will remove the pop up message of scheduler not running
-
-![Initialize scheduler](images/sceduler_started.png)
